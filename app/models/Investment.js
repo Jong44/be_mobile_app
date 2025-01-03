@@ -1,5 +1,7 @@
 import sequelize from "../configs/database.js";
 import { DataTypes } from "sequelize";
+import Business from "./Business.js";
+import Owner from "./Owner.js";
 
 const Investment = sequelize.define("investment", {
     investment_id: {
@@ -39,6 +41,28 @@ const Investment = sequelize.define("investment", {
     tableName: "investment",
     timestamps: true,
 });
+
+Business.hasMany(Investment, {
+    foreignKey: "business_id",
+    as: "investments",
+});
+
+Investment.belongsTo(Business, {
+    foreignKey: "business_id",
+    as: "business",
+});
+
+Owner.hasMany(Investment, {
+    foreignKey: "bussinessowner_id",
+    as: "investments",
+});
+
+Investment.belongsTo(Owner, {
+    foreignKey: "bussinessowner_id",
+    as: "owner",
+});
+
+
 
 export default Investment;
 

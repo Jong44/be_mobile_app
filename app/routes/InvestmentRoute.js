@@ -1,5 +1,5 @@
 import express from 'express';
-import {getInvestments, getInvestmentById, createInvestment} from '../controllers/InvestmentController.js';
+import {getInvestments, getInvestmentById, createInvestment, getInvestmentByUserId} from '../controllers/InvestmentController.js';
 import multer from 'multer';
 import fs from 'fs';
 
@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
 router.get('/', getInvestments);
 router.post('/', upload.single('file'), createInvestment);
 router.get('/:id', getInvestmentById);
+router.get('/user/:id', getInvestmentByUserId);
 
 
 

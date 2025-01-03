@@ -1,4 +1,6 @@
+import Business from "../models/Business.js";
 import Investment from "../models/Investment.js";
+import Owner from "../models/Owner.js";
 
 let response = {
     status: false,
@@ -166,6 +168,52 @@ export const deleteInvestment = async (req, res) => {
                 data: [],
             }
             res.status(400).json(response);
+        }
+    } catch (error) {
+        response = {
+            status: false,
+            message: error.message,
+            data: [],
+        }
+        res.status(500).json(response);
+    }
+}
+
+export const getInvestmentByUserId = async (req, res) => {
+    try {
+        const investments = await Investment.findAll({
+            where: {
+                investment_user_id: req.params.id,
+            },
+            include: [
+                {
+                    model: Business,
+                    as: 'business',
+                    attributes: [
+                        "business_name",
+                    ]
+                },
+                {
+                    model: Owner,
+                    as: 'owner',
+                }
+            ]
+        });
+        if(investments){
+            response = {
+                status: true,
+                message: "Data fetched successfullyy",
+                data: investments,
+            }
+            res.status(200).json(response);
+        }
+        else{
+            response = {
+                status: false,
+                message: "Data not found",
+                data: [],
+            }
+            res.status(404).json(response);
         }
     } catch (error) {
         response = {
